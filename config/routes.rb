@@ -1,5 +1,10 @@
-Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+# frozen_string_literal: true
 
-  # root to: "home#index"
+Rails.application.routes.draw do
+  # get 'project/index'
+  # get 'project/new'
+  resources :projects
+  devise_for :users, controllers: { registrations: 'users/registrations' }
+
+  root to: 'home#index'
 end
