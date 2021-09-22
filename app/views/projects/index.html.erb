@@ -1,3 +1,4 @@
+<p id="notice"><%= notice %></p>
 <table>
   <%= link_to 'Edit Profile', edit_user_registration_path %>
   <%= button_to "logout", destroy_user_session_path, method: :delete  %>
@@ -19,14 +20,26 @@
       <tr>
         <td><%= project.title %></td>
         <td><%= project.description %></td>
-        <td><%= link_to 'Show', project %></td>
-        <td><%= link_to 'Edit', edit_project_path(project) %></td>
-        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if project.manager == current_user && current_user.manager?%>
+          <td><%= link_to 'Detail', project_path(project) %></td>
+          <td><%= link_to 'Edit', edit_project_path(project) %></td>
+          <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+        <% elsif project.users.include?(current_user) && current_user.developer?%>
+          <td><%= link_to 'Detail', project_path(project) %></td>
+
+        <% elsif current_user.qa?%>
+          <td><%= link_to 'Detail', project_path(project) %></td>
+
+        <% end%>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Project', new_project_path %>
+<div style='text-align:center;' >
+<% if current_user.manager? %>
+  <%= link_to 'New Project', new_project_path %>
+<% end%>
+</div>

@@ -10,5 +10,8 @@
 
 <h2>Bugs/Features</h2>
 
-<%= link_to 'Edit', edit_project_path(@project) %>
+<% if current_user.manager? %>
+  <%= link_to 'Edit', edit_project_path(@project) %> |
+<% end%>
 <%= link_to 'Back', projects_path %>
+

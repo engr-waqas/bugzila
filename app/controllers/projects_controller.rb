@@ -2,22 +2,26 @@ class ProjectsController < ApplicationController
   before_action :set_project, except: %i[index new create]
 
   def index
-    @projects = Project.all
+    @projects = policy_scope(Project)
+    authorize Project
   end
 
   def show
+    authorize @project
   end
 
   def new
-    @project = Project.new
+    @project = current_user.projects.new
+    authorize @project
   end
 
   def edit
-    @project
+    authorize @project
   end
 
   def create
     @project = current_user.projects.new(project_params)
+    authorize @project
     if @project.save
       redirect_to @project
     else
@@ -26,6 +30,7 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    authorize @project
     if @project.update(project_params)
       redirect_to @project
     else
@@ -34,6 +39,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
+    authorize @project
     @project.destroy
     redirect_to projects_url
   end
