@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Project < ApplicationRecord
   belongs_to :manager, class_name: 'Manager'
   has_and_belongs_to_many :users

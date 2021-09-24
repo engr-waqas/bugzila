@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectPolicy < ApplicationPolicy
+class BugPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -10,7 +10,7 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      @user.projects
+      Bug.all
     end
   end
 
@@ -19,7 +19,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def new?
-    user.manager?
+    user.qa?
   end
 
   def create?
@@ -27,20 +27,14 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    user.manager? && record.manager == user
+    user.qa? && record.qa == user
   end
 
   def destroy?
-    user.type == 'Manager' && record.manager == user
+    user.qa? && record.qa == user
   end
 
   def show?
-    if user.manager?
-      record.manager == user
-    elsif user.developer?
-      record.users.include?(user)
-    else
-      true
-    end
+    true
   end
 end

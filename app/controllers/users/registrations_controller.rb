@@ -2,7 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    before_action :configure_sign_up_params, only: [:create, :edit]
+    before_action :configure_sign_up_params, only: %i[create edit]
     # before_action :configure_account_update_params, only: [:update]
 
     # GET /resource/sign_up
@@ -10,9 +10,6 @@ module Users
     # POST /resource
 
     # GET /resource/edit
-    def edit
-      super
-    end
 
     # PUT /resource
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectsController < ApplicationController
   before_action :set_project, except: %i[index new create]
 
@@ -7,6 +9,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @developer = Developer.all
+    @qas = Qa.all
     authorize @project
   end
 
