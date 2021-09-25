@@ -32,7 +32,7 @@ class BugsController < ApplicationController
     authorize @bug
 
     if @bug.save
-      redirect_to project_bugs_url
+      redirect_to project_bugs_path
     else
       render 'new'
     end
@@ -41,7 +41,7 @@ class BugsController < ApplicationController
   def update
     authorize @bug
     if @bug.update(bug_params)
-      redirect_to project_bugs_url
+      redirect_to project_bugs_path
     else
       render 'edit'
     end
@@ -50,7 +50,31 @@ class BugsController < ApplicationController
   def destroy
     authorize @bug
     @bug.destroy
-    redirect_to project_bugs_url
+    redirect_to project_bugs_path
+  end
+
+  def assign
+    @project = Project.find(params[:project_id])
+    @bug = Bug.find(params[:id])
+    @user = User.find(params[:user_id])
+    authorize @bug
+
+    if @bug.update(developer_id: @user.id, status: 'Started')
+      redirect_to project_bugs_path(@project)
+    else
+      redirect_to project_bugs_path(@project), notice: 'Not success'
+    end
+  end
+
+  def change_status
+    @project = Project.find(params[:project_id])
+    @bug = Bug.find(params[:id])
+    authorize @bug
+    if @bug.update(status: 'Resolved')
+      redirect_to project_bugs_path(@project)
+    else
+      redirect_to project_bugs_path(@project), notice: 'Not Success'
+    end
   end
 
   private

@@ -23,11 +23,27 @@
   <%= @bug.status %>
 </p>
 
+<% if current_user.qa? %>
+  <% if @bug.status == 'Started' %>
+    <strong>Assigned to:</strong>
+    <%= @bug.developer.name %>
+  <% elsif @bug.status == 'Resolved' %>
+    <strong>Resolved by:</strong>
+    <%= @bug.developer.name %>
+  <% end %>
+<% end %>
+
+<% if current_user.developer? %>
+  <strong>Reported by:</strong>
+  <%= @bug.qa.name %>
+<% end %>
+
 <p>
   <strong>Screenshot:</strong>
   <%= @bug.screenshot %>
 </p>
 
+<br>
 <% if current_user.qa? %>
   <%= link_to 'Edit', edit_project_bug_path(@bug) %> |
 <% end %>

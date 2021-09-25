@@ -15,15 +15,19 @@ class BugPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user.qa? || user.developer?
   end
 
   def new?
-    user.qa?
+    user.qa? && record.project.users.include?(user)
   end
 
   def create?
     new?
+  end
+
+  def edit?
+    update?
   end
 
   def update?
@@ -35,6 +39,14 @@ class BugPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    index?
+  end
+
+  def assign?
+    user.developer? && record.developer.nil? && record.status == 'New'
+  end
+
+  def change_status?
+    user.developer? && record.developer == user && record.status == 'Started'
   end
 end
