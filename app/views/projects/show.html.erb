@@ -8,10 +8,61 @@
   <%= @project.description %>
 </p>
 
-<h2>Bugs/Features</h2>
+<% if !current_user.manager? %>
+  <h3>Manager:
+  <%= @project.manager.name + ' (' + @project.manager.email + ')' %></h3>
+<% end %>
 
+<h1>All Developers</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+	<tbody>
+<% @developers.each do |developer|%>
+  	<tr>
+    <% if @project.users.include?(developer) && !current_user.manager? %>
+	  	<td><%= developer.name %></td>
+		  <td><%= developer.email %></td>
+		<% elsif current_user.manager? %>
+      <td><%= developer.name %></td>
+		  <td><%= developer.email %></td>
+		<% end %>
+
+		<% if @project.users.include?(developer) && current_user.manager? %>
+	  	<td><%= link_to 'Remove Developer', remove_user_project_path(@project , user_id: developer.id) %></tr></td>
+		<% elsif current_user.manager? %>
+			<td><%= link_to 'Add Developer', add_user_project_path(@project, user_id: developer.id) %></tr></td>
+		<% end %>
+<% end %>
+</tbody></table>
+
+<h1>All QAs</h1>
+<table>
+	<tbody>
+<% @qas.each do |qa|%>
+  	<tr>
+		<% if @project.users.include?(qa) && !current_user.manager? %>
+	  	<td><%= qa.name %></td>
+		  <td><%= qa.email %></td>
+		<% elsif current_user.manager? %>
+      <td><%= qa.name %></td>
+		  <td><%= qa.email %></td>
+		<% end %>
+		<% if @project.users.include?(qa) && current_user.manager? %>
+	  	<td><%= link_to 'Remove QA', remove_user_project_path(@project , user_id: qa.id) %></tr></td>
+		<% elsif current_user.manager? %>
+			<td><%= link_to 'Add QA', add_user_project_path(@project, user_id: qa.id) %></tr></td>
+		<% end %>
+<% end %>
+</tbody></table>
+
+<br>
 <% if current_user.manager? %>
   <%= link_to 'Edit', edit_project_path(@project) %> |
 <% end%>
-<%= link_to 'Back', projects_path %>
 
+<%= link_to 'Back', projects_path %>

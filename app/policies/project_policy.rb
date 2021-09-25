@@ -43,4 +43,12 @@ class ProjectPolicy < ApplicationPolicy
       true
     end
   end
+
+  def add_user?
+    update?
+  end
+
+  def remove_user?
+    destroy?
+  end
 end

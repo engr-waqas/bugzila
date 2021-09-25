@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @developer = Developer.all
+    @developers = Developer.all
     @qas = Qa.all
     authorize @project
   end
@@ -46,6 +46,25 @@ class ProjectsController < ApplicationController
     authorize @project
     @project.destroy
     redirect_to projects_url
+  end
+
+  def add_user
+    @project = Project.find(params[:id])
+    @user = User.find(params[:user_id])
+    authorize @project
+    if @project.users << @user
+      redirect_to @project
+    else
+      redirect_to @project, notice: "User Can't be added to project. "
+    end
+  end
+
+  def remove_user
+    @project = Project.find(params[:id])
+    @user = User.find(params[:user_id])
+    authorize @project
+    @project.users.delete(@user)
+    redirect_to @project
   end
 
   private
