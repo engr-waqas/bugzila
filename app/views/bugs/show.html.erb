@@ -39,8 +39,10 @@
 <% end %>
 
 <p>
-  <strong>Screenshot:</strong>
-  <%= @bug.screenshot %>
+  <% if @bug.screenshot.attached? %>
+    <strong>Screenshot:</strong>
+    <%= image_tag @bug.screenshot.variant(resize: '300x300'), accept: 'image/pgn, image/gif'%>
+  <% end %>
 </p>
 
 <br>
