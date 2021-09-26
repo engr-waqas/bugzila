@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
   resources :projects do
     member do
-      get :add_user, :remove_user
+      get :add_user
+      get :remove_user
     end
     resources :bugs do
       get :assign, on: :member

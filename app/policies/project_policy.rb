@@ -38,7 +38,7 @@ class ProjectPolicy < ApplicationPolicy
     if user.manager?
       record.manager == user
     elsif user.developer?
-      record.users.include?(user)
+      record.users.exists?(user.id)
     else
       true
     end

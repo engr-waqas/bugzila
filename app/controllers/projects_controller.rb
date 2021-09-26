@@ -2,6 +2,7 @@
 
 class ProjectsController < ApplicationController
   before_action :set_project, except: %i[index new create]
+  after_action :verify_authorized, unless: :devise_controller?
 
   def index
     @projects = policy_scope(Project)
@@ -11,7 +12,7 @@ class ProjectsController < ApplicationController
   def show
     @developers = Developer.all
     @qas = Qa.all
-    authorize @project
+    authorize set_project
   end
 
   def new
@@ -20,51 +21,49 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    authorize @project
+    authorize set_project
   end
 
   def create
-    @project = current_user.projects.new(project_params)
-    authorize @project
-    if @project.save
-      redirect_to @project
+    set_project = current_user.projects.new(project_params)
+    authorize set_project
+    if set_project.save
+      redirect_to set_project
     else
       render 'new'
     end
   end
 
   def update
-    authorize @project
-    if @project.update(project_params)
-      redirect_to @project
+    authorize set_project
+    if set_project.update(project_params)
+      redirect_to set_project
     else
       render 'edit'
     end
   end
 
   def destroy
-    authorize @project
-    @project.destroy
+    authorize set_project
+    set_project.destroy
     redirect_to projects_url
   end
 
   def add_user
-    @project = Project.find(params[:id])
     @user = User.find(params[:user_id])
-    authorize @project
-    if @project.users << @user
-      redirect_to @project
+    authorize set_project
+    if set_project.users << @user
+      redirect_to set_project
     else
-      redirect_to @project, notice: "User Can't be added to project. "
+      redirect_to set_project, notice: "User Can't be added to project. "
     end
   end
 
   def remove_user
-    @project = Project.find(params[:id])
     @user = User.find(params[:user_id])
-    authorize @project
-    @project.users.delete(@user)
-    redirect_to @project
+    authorize set_project
+    set_project.users.delete(@user)
+    redirect_to set_project
   end
 
   private

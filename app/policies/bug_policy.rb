@@ -19,7 +19,7 @@ class BugPolicy < ApplicationPolicy
   end
 
   def new?
-    user.qa? && record.project.users.include?(user)
+    user.qa? && record.project.users.exists?(user.id)
   end
 
   def create?
@@ -43,10 +43,10 @@ class BugPolicy < ApplicationPolicy
   end
 
   def assign?
-    user.developer? && record.developer.nil? && record.status == 'New'
+    user.developer?
   end
 
   def change_status?
-    user.developer? && record.developer == user && record.status == 'Started'
+    user.developer? && record.developer == user
   end
 end
