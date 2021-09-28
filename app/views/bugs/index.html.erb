@@ -1,8 +1,8 @@
-<h1>Bugs</h1>
-
-<table>
+<h1>Bugs in <%= @project.title%></h1><br>
+<table class="container">
   <thead>
     <tr>
+      <th></th>
       <th>Title</th>
       <th>Description</th>
       <th>Deadline</th>
@@ -14,22 +14,27 @@
   <tbody>
     <% @bugs.each do |bug| %>
       <tr>
+        <td></td>
         <td><%= bug.title %></td>
         <td><%= bug.description %></td>
         <td><%= bug.deadline %></td>
         <td><%= bug.bug_type %></td>
         <td><%= bug.status %></td>
         <% if current_user.qa? %>
-          <td><%= link_to 'Detail', project_bug_path(@project, bug) %></td>
-          <td><%= link_to 'Edit', edit_project_bug_path(@project, bug) %></td>
-          <td><%= link_to 'Destroy', project_bug_path(@project, bug), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
+          <% if bug.qa == current_user%>
+            <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: "btn btn-primary" %></td>
+          <% else %>
+            <td></td>
+          <% end %>
+          <td><%= link_to 'Destroy', project_bug_path(@project, bug), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
 
         <% elsif current_user.developer? %>
-          <td><%= link_to 'Detail', project_bug_path(@project, bug) %></td>
+          <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
           <% if bug.developer.nil? && bug.status == 'New'%>
-            <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id) %></td>
+            <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), class: "btn btn-primary" %></td>
           <% elsif bug.developer == current_user && bug.status == 'Started' %>
-            <td><%= link_to 'Mark as Resolved', change_status_project_bug_path(@project, bug) %></td>
+            <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), class: "btn btn-secondary" %></td>
           <% elsif bug.developer != current_user && bug.status == 'Started'%>
             <td>Assigned to <%= bug.developer.name %></td>
           <% elsif bug.status == 'Resolved'%>
@@ -43,7 +48,9 @@
 </table>
 
 <br>
-<% if current_user.qa? %>
-  <%= link_to 'Report Bug', new_project_bug_path %> |
-<% end %>
-<%= link_to 'Back', projects_path %>
+<div class="align-center">
+  <%= link_to 'Back', projects_path, class: "btn btn-secondary" %>
+  <% if current_user.qa? %>
+    <%= link_to 'Report Bug', new_project_bug_path, class: "btn btn-light" %>
+  <% end %>
+</div>

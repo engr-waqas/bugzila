@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :timeoutable
+  validates_presence_of :name, :type
 
   def manager?
     type == 'Manager'

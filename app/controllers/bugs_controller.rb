@@ -11,6 +11,7 @@ class BugsController < ApplicationController
   end
 
   def show
+    @project = Project.find(params[:project_id])
     authorize set_bug
   end
 

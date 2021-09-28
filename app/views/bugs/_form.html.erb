@@ -26,7 +26,10 @@
   </div><br>
 
   <div class="">
-    <%= form.label :screenshot %>
+    <%= form.label :screenshot %><br>
+    <% if @bug.screenshot.attached? %>
+      <%= image_tag @bug.screenshot.variant(resize: '300x300'), accept: 'image/pgn, image/gif'%>
+    <% end %>
     <%= form.file_field :screenshot, accept: "image/png, image/gif"%>
   </div><br>
 
@@ -34,3 +37,7 @@
     <%= form.submit %>
   </div><br>
 <% end %>
+
+<div class="align-center">
+  <%= link_to 'Back', project_bugs_path, class: "btn btn-secondary" %>
+</div>

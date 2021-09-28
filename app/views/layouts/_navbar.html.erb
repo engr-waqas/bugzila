@@ -1,0 +1,15 @@
+<div class="navbar navbar-expand bg-primary">
+  <% unless user_signed_in?%>
+	  <strong> Welcome to Bugzilla </strong><br>
+    <ul class="navbar-nav ms-auto flex-nowrap">
+      <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
+    </ul>
+  <% else %>
+    <strong>Welcome <%= current_user.name %> in Bugzilla </strong>
+    <ul class="navbar-nav ms-auto flex-nowrap">
+      <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary" %>
+	    <%= link_to "Logout", destroy_user_session_path, class: "btn btn-primary",  method: :delete %>
+    </ul>
+  <% end %>
+ </div>

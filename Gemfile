@@ -70,3 +70,7 @@ gem 'pundit'
 
 # Use ActiveStorage variant for Transforming Images
 gem 'mini_magick'
+
+gem 'bootstrap'
+
+gem 'jquery-rails'

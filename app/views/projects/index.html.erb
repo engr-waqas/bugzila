@@ -1,36 +1,33 @@
-<table>
-  <%= link_to 'Edit Profile', edit_user_registration_path %> |
-  <%= link_to "logout", destroy_user_session_path, method: :delete  %>
-</table>
-
-<h1>Projects</h1>
+<h1>Your Projects</h1><br>
 <table>
   <thead>
     <tr>
+      <th></th>
       <th>Title</th>
       <th>Description</th>
     </tr>
   </thead>
-
   <tbody>
+  <tr></tr>
     <% @projects.each do |project| %>
-      <tr>
+      <tr >
+      <td></td>
         <td><%= project.title %></td>
         <td><%= project.description %></td>
 
         <% if project.manager == current_user && current_user.manager?%>
-          <td><%= link_to 'Users', project_path(project) %></td>
-          <td><%= link_to 'Edit', edit_project_path(project) %></td>
-          <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Users', project_path(project), class: "btn btn-success" %> </td>
+          <td><%= link_to 'Edit', edit_project_path(project), class: "btn btn-primary" %></td>
+          <td><%= link_to 'Destroy', project, class: "btn btn-danger" , method: :delete, data: { confirm: 'Are you sure?' } %></td>
 
         <% elsif project.users.include?(current_user) && current_user.developer?%>
-          <td><%= link_to 'Users', project_path(project) %></td>
-          <td><%= link_to "Bugs", project_bugs_path(project) %></td>
+          <td><%= link_to 'Users', project_path(project), class: "btn btn-primary" %></td>
+          <td><%= link_to "Bugs", project_bugs_path(project), class: "btn btn-info" %></td>
 
         <% elsif current_user.qa?%>
-          <td><%= link_to 'Users', project_path(project) %></td>
-          <td><%= link_to "Bugs", project_bugs_path(project) %></td>
-          <td><%= link_to "Report Bug", new_project_bug_path(project) %></td>
+          <td><%= link_to 'Users', project_path(project), class: "btn btn-primary" %></td>
+          <td><%= link_to "Bugs", project_bugs_path(project), class: "btn btn-info" %></td>
+          <td><%= link_to "Report Bug", new_project_bug_path(project), class: "btn btn-light" %></td>
 
         <% end%>
       </tr>
@@ -39,7 +36,8 @@
 </table>
 
 <br>
-<% if current_user.manager? %>
-  <%= link_to 'Create New Project', new_project_path %>
-<% end%>
+<div class="align-center">
+  <% if current_user.manager? %>
+    <%= link_to 'Create New Project', new_project_path, class: "btn btn-light" %>
+  <% end%>
 </div>

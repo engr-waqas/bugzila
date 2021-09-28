@@ -1,7 +1,4 @@
-<p>
-  <strong>Title:</strong>
-  <%= @project.title %>
-</p>
+<h1><%= @project.title %></h1>
 
 <p>
   <strong>Description:</strong>
@@ -9,10 +6,10 @@
 </p>
 
 <% if !current_user.manager? %>
-  <h3>Manager:
-  <%= @project.manager.name + ' (' + @project.manager.email + ')' %></h3>
+  <strong>Manager:</strong>
+  <%= @project.manager.name + ' (' + @project.manager.email + ')' %>
 <% end %>
-
+<br><br>
 <h1>All Developers</h1>
 <table>
   <thead>
@@ -33,13 +30,15 @@
 		<% end %>
 
 		<% if @project.users.include?(developer) && current_user.manager? %>
-	  	<td><%= link_to 'Remove Developer', remove_user_project_path(@project , user_id: developer.id) %></tr></td>
+
+			<td><%= link_to 'Remove from Project', remove_user_project_path(@project, user_id: developer.id), class: "btn btn-danger" %></td></tr>
 		<% elsif current_user.manager? %>
-			<td><%= link_to 'Add Developer', add_user_project_path(@project, user_id: developer.id) %></tr></td>
+	  	<td><%= link_to 'Add to Project', add_user_project_path(@project, user_id: developer.id), class: "btn btn-success" %></td></tr>
 		<% end %>
 <% end %>
 </tbody></table>
 
+<br>
 <h1>All QAs</h1>
 <table>
 	<tbody>
@@ -53,16 +52,17 @@
 		  <td><%= qa.email %></td>
 		<% end %>
 		<% if @project.users.include?(qa) && current_user.manager? %>
-	  	<td><%= link_to 'Remove QA', remove_user_project_path(@project , user_id: qa.id) %></tr></td>
+	  	<td><%= link_to 'Remove QA', remove_user_project_path(@project, user_id: qa.id), class: "btn btn-danger" %></tr></td>
 		<% elsif current_user.manager? %>
-			<td><%= link_to 'Add QA', add_user_project_path(@project, user_id: qa.id) %></tr></td>
+			<td><%= link_to 'Add QA', add_user_project_path(@project, user_id: qa.id), class: "btn btn-success" %></tr></td>
 		<% end %>
 <% end %>
 </tbody></table>
 
-<br>
-<% if current_user.manager? %>
-  <%= link_to 'Edit', edit_project_path(@project) %> |
-<% end%>
-
-<%= link_to 'Back', projects_path %>
+<br><br>
+<div class="align-center">
+	<%= link_to 'Back', projects_path, class: "btn btn-secondary" %>
+	<% if current_user.manager? %>
+	  <%= link_to 'Edit Project', edit_project_path(@project), class: "btn btn-primary" %>
+	<% end%>
+</div>
