@@ -14,7 +14,7 @@
 <p>
   <% if @bug.screenshot.attached? %>
     <strong>Screenshot:</strong><br>
-    <%= image_tag @bug.screenshot.variant(resize: '300x300') %>
+    <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE) %>
   <% end %>
 </p>
 

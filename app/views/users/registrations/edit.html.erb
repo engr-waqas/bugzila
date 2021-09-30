@@ -15,7 +15,7 @@
 
    <div class="field">
     <%= f.label :user_type %><br />
-    <%= f.select :user_type, [["Manager" , 'manager'] ,["Developer", 'developer'] , ["QA", 'qa']] %>
+    <%= f.select :user_type, User.user_types.keys.map { |t| [t.humanize, t] } %>
   </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>

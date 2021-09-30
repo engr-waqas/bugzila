@@ -17,20 +17,20 @@
 
   <div class="">
     <%= form.label :bug_type %>
-    <%= form.select :bug_type, [["Bug", :bug], ["Feature", :Feature]] %>
+    <%= form.select :bug_type, Bug.bug_types.keys.map { |t| [t.humanize, t] } %>
   </div><br>
 
   <div class="">
     <%= form.label :status %>
-    <%= form.select :status, [["New", :newly], ["Started", :started], ["Resolved", :resolved]] %>
+    <%= form.select :status, Bug.statuses.keys.map { |s| [s.humanize, s] } %>
   </div><br>
 
   <div class="">
     <%= form.label :screenshot %><br>
     <% if @bug.screenshot.attached? %>
-      <%= image_tag @bug.screenshot.variant(resize: '300x300'), accept: 'image/pgn, image/gif'%>
+      <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), accept: 'image/pgn, image/gif'%>
     <% end %>
-    <%= form.file_field :screenshot, accept: "image/png, image/gif"%>
+    <%= form.file_field :screenshot, accept: Bug::IMG_TYPE %>
   </div><br>
 
   <div class="">

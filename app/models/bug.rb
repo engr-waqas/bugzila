@@ -12,6 +12,8 @@ class Bug < ApplicationRecord
 
   enum bug_type: { bug: 0, feature: 1 }
   enum status: { newly: 0, started: 1, resolved: 2 }
+  IMG_SIZE = '300x300'
+  IMG_TYPE = 'image/png, image/gif'
 
   private
 

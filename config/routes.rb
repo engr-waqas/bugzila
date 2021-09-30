@@ -8,9 +8,12 @@ Rails.application.routes.draw do
       get :add_user
       get :remove_user
     end
+
     resources :bugs do
-      get :assign, on: :member
-      get :change_status, on: :member
+      member do
+        get :assign
+        get :change_status
+      end
     end
   end
 

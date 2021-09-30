@@ -9,16 +9,17 @@ User.create(name: 'Waqar', email: 'waqar@gmail.com', password: 'aaaaaa', user_ty
 
 User.first.projects.create(title: 'Grosery Store', description: 'Buy and sell all kinds of grosery items.')
 User.first.projects.create(title: 'Shopping App', description: 'A small shopping app to buy.')
-User.find(2).projects.create(title: 'Doorstep Services', description: 'Physical services at Doorstep.')
-User.find(2).projects.create(title: 'wHealth', description: 'Appointment booking.')
+User.last.projects.create(title: 'Doorstep Services', description: 'Physical services at Doorstep.')
+User.last.projects.create(title: 'wHealth', description: 'Appointment booking.')
 
-User.find(5).bugs.create(title: 'Mutable', description: 'Symbol error.', deadline: '2022-09-29 13:01:54',
-                         bug_type: :bug, status: :newly, project_id: 1)
-User.find(5).bugs.create(title: 'Format', description: 'Email format error.', deadline: '2022-09-29 13:01:54',
-                         bug_type: :feature, status: :started, project_id: 1, developer_id: 3)
-User.find(5).bugs.create(title: 'Multiple connections', description: 'Multiple databases.',
-                         deadline: '2022-09-29 13:01:54', bug_type: :bug, status: :resolved, project_id: 2,
-                         developer_id: 3)
+User.last(2).first.bugs.create(title: 'Mutable', description: 'Symbol error.',
+                               deadline: '2022-09-29 13:01:54', bug_type: :bug, status: :newly, project_id: 1)
+User.last(2).first.bugs.create(title: 'Format', description: 'Email format error.',
+                               deadline: '2022-09-29 13:01:54', bug_type: :feature, status: :started,
+                               project_id: 1, developer_id: 3)
+User.last(2).first.bugs.create(title: 'Multiple connections', description: 'Multiple databases.',
+                               deadline: '2022-09-29 13:01:54', bug_type: :bug, status: :resolved,
+                               project_id: 2, developer_id: 3)
 User.last.bugs.create(title: 'Fuction', description: 'Transformation.', deadline: '2022-09-29 13:01:54',
                       bug_type: :bug, status: :newly, project_id: 2)
 User.last.bugs.create(title: 'Contacl list', description: 'Default list.', deadline: '2022-09-29 13:01:54',
