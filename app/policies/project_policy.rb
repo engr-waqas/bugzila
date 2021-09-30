@@ -23,7 +23,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def add_user?
-    update? #&& record.enrollments.exists?(user.id)
+    update?
   end
 
   def remove_user?
