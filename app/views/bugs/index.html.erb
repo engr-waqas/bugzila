@@ -22,12 +22,12 @@
         <td><%= bug.status %></td>
 
         <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
-        <% if bug.creator == current_user%>
+        <% if policy(bug).update? %>
           <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: "btn btn-primary" %></td>
           <td><%= link_to 'Destroy', project_bug_path(@project, bug), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% elsif bug.newly? && !current_user.qa?%>
+        <% elsif policy(bug).assign? %>
           <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), class: "btn btn-primary" %></td>
-        <% elsif bug.started? && bug.developer == current_user %>
+        <% elsif policy(bug).change_status? %>
           <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), class: "btn btn-secondary" %></td>
         <% end %>
       </tr>
@@ -37,7 +37,7 @@
 <br>
 <div class="align-center">
   <%= link_to 'Back', projects_path, class: "btn btn-secondary" %>
-  <% if current_user.qa? %>
+  <% if policy(:bug).new? %>
     <%= link_to 'Report Bug', new_project_bug_path, class: "btn btn-light" %>
   <% end %>
 </div>

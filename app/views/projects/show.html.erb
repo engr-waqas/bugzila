@@ -19,9 +19,9 @@
 	  <td><%= user.user_type %></td>
 	<% end %>
 
-	<% if current_user.manager? && @project.enrollments.exists?(user.id) && !user.manager? %>
+	<% if policy(@project).add_user? %>
 		<td><%= link_to 'Remove from Project', remove_user_project_path(@project, user_id: user.id), class: "btn btn-danger" %></td></tr>
-	<% elsif current_user.manager? && !user.manager? %>
+	<% elsif policy(@project).remove_user? %>
 	 	<td><%= link_to 'Add user to Project', add_user_project_path(@project, user_id: user.id), class: "btn btn-success" %></td></tr>
 	<% end %>
 <% end %>
@@ -30,7 +30,7 @@
 <br><br>
 <div class="align-center">
 	<%= link_to 'Back', projects_path, class: "btn btn-secondary" %>
-	<% if current_user.manager? %>
+	<% if policy(@project).create? %>
 	  <%= link_to 'Edit Project', edit_project_path(@project), class: "btn btn-primary" %>
 	<% end%>
 </div>

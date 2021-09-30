@@ -21,7 +21,7 @@
 <br>
 <div class="align-center">
   <%= link_to 'Back', project_bugs_path, class: "btn btn-secondary" %>
-  <% if @bug.creator == current_user %>
+  <% if policy(@bug).update? %>
     <%= link_to 'Edit Bug', edit_project_bug_path(@project, @bug), class: "btn btn-light" %>
   <% end %>
 </div>

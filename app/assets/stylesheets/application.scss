@@ -43,6 +43,16 @@ tr:nth-child(even) {
 .align-left{
   text-align: left
 }
+
 .align-center {
   text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.text-field {
+  border: 2px solid rgb(142, 151, 138);
+  border-radius: 5px;
 }

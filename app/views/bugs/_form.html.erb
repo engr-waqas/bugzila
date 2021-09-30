@@ -1,31 +1,31 @@
 <%= form_with(model: bug, url: [@project, @bug], local: true) do |form| %>
 
-  <div class="">
+  <div >
     <%= form.label :title %>
     <%= form.text_field :title, required: true, autofocus: true %>
   </div><br>
 
-  <div class="">
+  <div >
     <%= form.label :description %>
     <%= form.text_area :description %>
   </div><br>
 
-  <div class="">
+  <div >
     <%= form.label :deadline %>
     <%= form.datetime_select :deadline %>
   </div><br>
 
-  <div class="">
+  <div >
     <%= form.label :bug_type %>
     <%= form.select :bug_type, Bug.bug_types.keys.map { |t| [t.humanize, t] } %>
   </div><br>
 
-  <div class="">
+  <div >
     <%= form.label :status %>
     <%= form.select :status, Bug.statuses.keys.map { |s| [s.humanize, s] } %>
   </div><br>
 
-  <div class="">
+  <div >
     <%= form.label :screenshot %><br>
     <% if @bug.screenshot.attached? %>
       <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), accept: 'image/pgn, image/gif'%>
@@ -33,7 +33,7 @@
     <%= form.file_field :screenshot, accept: Bug::IMG_TYPE %>
   </div><br>
 
-  <div class="">
+  <div >
     <%= form.submit %>
   </div><br>
 <% end %>

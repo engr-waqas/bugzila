@@ -27,10 +27,10 @@ class BugPolicy < ApplicationPolicy
   end
 
   def assign?
-    user.developer?
+    user.developer? && record.newly?
   end
 
   def change_status?
-    record.developer == user
+    record.developer == user && record.started?
   end
 end

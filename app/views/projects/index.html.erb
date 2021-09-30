@@ -1,5 +1,5 @@
 <div class="align-center">
-  <% if current_user.manager? %>
+  <% if policy(:project).create? %>
     <%= link_to 'Create New Project', new_project_path, class: "btn btn-light" %>
   <% end%>
 </div><br>
@@ -23,7 +23,7 @@
         <td><%= project.description %></td>
 
         <td><%= link_to 'Detail', project_path(project), class: "btn btn-success" %> </td>
-        <% if current_user.manager? %>
+        <% if policy(:project).create? %>
           <td><%= link_to 'Edit', edit_project_path(project), class: "btn btn-primary" %></td>
           <td><%= link_to 'Destroy', project, class: "btn btn-danger" , method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% else %>
