@@ -9,9 +9,7 @@ class BugPolicy < ApplicationPolicy
       @scope = scope
     end
 
-    def resolve
-      Bug.all
-    end
+    def resolve; end
   end
 
   def index?
@@ -19,23 +17,19 @@ class BugPolicy < ApplicationPolicy
   end
 
   def new?
-    user.qa? && record.project.users.exists?(user.id)
+    user.qa?
   end
 
   def create?
     new?
   end
 
-  def edit?
-    update?
-  end
-
   def update?
-    user.qa? && record.qa == user
+    record.creator == user
   end
 
   def destroy?
-    user.qa? && record.qa == user
+    record.creator == user
   end
 
   def show?
@@ -47,6 +41,6 @@ class BugPolicy < ApplicationPolicy
   end
 
   def change_status?
-    user.developer? && record.developer == user
+    record.developer == user
   end
 end

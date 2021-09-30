@@ -8,37 +8,25 @@ class ProjectPolicy < ApplicationPolicy
       @user  = user
       @scope = scope
     end
-
-    def resolve
-      @user.projects
-    end
-  end
-
-  def index?
-    true
-  end
-
-  def new?
-    user.manager?
   end
 
   def create?
-    new?
+    user.manager?
   end
 
   def update?
-    user.manager? && record.manager == user
+    user.manager? && record.creator == user
   end
 
   def destroy?
-    user.type == 'Manager' && record.manager == user
+    update?
   end
 
   def show?
     if user.manager?
-      record.manager == user
+      record.creator == user
     elsif user.developer?
-      record.users.exists?(user.id)
+      record.enrollments.exists?(user.id)
     else
       true
     end

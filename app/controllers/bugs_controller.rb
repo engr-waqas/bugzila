@@ -1,37 +1,23 @@
 # frozen_string_literal: true
 
 class BugsController < ApplicationController
-  before_action :set_bug, only: %i[show edit update destroy]
+  before_action :set_bug, except: %i[new index create]
+  before_action :set_project, except: %i[update destroy]
+  after_action :verify_authorized, except: [], unless: :devise_controller?
 
   def index
-    @bugs = policy_scope(Bug)
-    @project = Project.find(params[:project_id])
-    @bugs = @bugs.where(project: @project)
-    authorize Bug
+    authorize @bugs = @project.bugs
   end
 
-  def show
-    @project = Project.find(params[:project_id])
-    authorize set_bug
-  end
+  def show; end
 
   def new
-    @project = Project.find(params[:project_id])
-    @bug = Bug.new(project: @project)
-    authorize @bug
-  end
-
-  def edit
-    @project = Project.find(params[:project_id])
-    authorize @bug
+    authorize @bug = Bug.new(project: @project)
   end
 
   def create
-    @bug = current_user.bugs.new(bug_params)
-    @project = Project.find(params[:project_id])
-    @bug.project = @project
-    authorize @bug
-
+    authorize @bug = current_user.bugs.create(bug_params)
+    @bug.project = set_project
     if @bug.save
       redirect_to project_bugs_path
     else
@@ -40,7 +26,6 @@ class BugsController < ApplicationController
   end
 
   def update
-    authorize set_bug
     if set_bug.update(bug_params)
       redirect_to project_bugs_path
     else
@@ -49,17 +34,13 @@ class BugsController < ApplicationController
   end
 
   def destroy
-    authorize set_bug
-    set_bug.destroy
+    authorize set_bug.destroy
     redirect_to project_bugs_path
   end
 
   def assign
-    @project = Project.find(params[:project_id])
     @user = User.find(params[:user_id])
-    authorize set_bug
-
-    if set_bug.update(developer_id: @user.id, status: 'Started')
+    if set_bug.update(developer_id: @user.id, status: :started)
       redirect_to project_bugs_path(@project)
     else
       redirect_to project_bugs_path(@project), notice: 'Not success'
@@ -67,9 +48,7 @@ class BugsController < ApplicationController
   end
 
   def change_status
-    @project = Project.find(params[:project_id])
-    authorize set_bug
-    if set_bug.update(status: 'Resolved')
+    if set_bug.update(status: :resolved)
       redirect_to project_bugs_path(@project)
     else
       redirect_to project_bugs_path(@project), notice: 'Not Success'
@@ -79,7 +58,11 @@ class BugsController < ApplicationController
   private
 
   def set_bug
-    @bug = Bug.find(params[:id])
+    authorize @bug = Bug.find(params[:id])
+  end
+
+  def set_project
+    @project = Project.find(params[:project_id])
   end
 
   def bug_params

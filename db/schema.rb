@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_26_153836) do
+ActiveRecord::Schema.define(version: 2021_09_28_111641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,40 +37,48 @@ ActiveRecord::Schema.define(version: 2021_09_26_153836) do
   end
 
   create_table "bugs", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.text "description"
     t.datetime "deadline"
-    t.string "bug_type"
-    t.string "status"
-    t.integer "project_id"
+    t.integer "bug_type", default: 0
+    t.integer "status", default: 0
+    t.bigint "project_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "developer_id"
-    t.integer "qa_id"
-    t.index ["title"], name: "index_bugs_on_title"
+    t.index ["project_id"], name: "index_bugs_on_project_id"
+    t.index ["title"], name: "index_bugs_on_title", unique: true
+    t.index ["user_id"], name: "index_bugs_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.text "description"
+    t.bigint "creator_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "manager_id"
+    t.index ["creator_id"], name: "index_projects_on_creator_id"
+    t.index ["title"], name: "index_projects_on_title", unique: true
   end
 
-  create_table "projects_users", id: false, force: :cascade do |t|
-    t.bigint "project_id", null: false
+  create_table "user_projects", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_user_projects_on_project_id"
+    t.index ["user_id"], name: "index_user_projects_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "name", null: false
+    t.integer "user_type", default: 0, null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "name"
-    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -78,4 +86,8 @@ ActiveRecord::Schema.define(version: 2021_09_26_153836) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bugs", "projects"
+  add_foreign_key "bugs", "users"
+  add_foreign_key "user_projects", "projects"
+  add_foreign_key "user_projects", "users"
 end

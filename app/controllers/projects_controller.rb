@@ -2,68 +2,55 @@
 
 class ProjectsController < ApplicationController
   before_action :set_project, except: %i[index new create]
-  after_action :verify_authorized, unless: :devise_controller?
+  before_action :set_user, only: %i[add_user remove_user]
+  after_action :verify_authorized, except: %i[index new], unless: :devise_controller?
 
   def index
-    @projects = policy_scope(Project)
-    authorize Project
+    @projects = current_user.projects if current_user.manager?
+    @projects = current_user.enrollments unless current_user.manager?
   end
 
   def show
-    @developers = Developer.all
-    @qas = Qa.all
-    authorize set_project
+    @users = @project.enrollments
   end
 
   def new
     @project = current_user.projects.new
-    authorize @project
-  end
-
-  def edit
-    authorize set_project
   end
 
   def create
-    set_project = current_user.projects.new(project_params)
-    authorize set_project
-    if set_project.save
-      redirect_to set_project
+    authorize @project = current_user.projects.create(project_params)
+    if @project.save
+      redirect_to projects_path, notice: 'Project Created Successfully.'
     else
       render 'new'
     end
   end
 
   def update
-    authorize set_project
     if set_project.update(project_params)
-      redirect_to set_project
+      redirect_to projects_path, notice: 'Project Updated Successfully.'
     else
       render 'edit'
     end
   end
 
   def destroy
-    authorize set_project
     set_project.destroy
-    redirect_to projects_url
+    redirect_to projects_path, notice: 'Project Deleted Successfully.'
   end
 
   def add_user
-    @user = User.find(params[:user_id])
-    authorize set_project
-    if set_project.users << @user
-      redirect_to set_project
+    if set_project.enrollments << set_user
+      redirect_to project_path
     else
-      redirect_to set_project, notice: "User Can't be added to project. "
+      redirect_to project_path, notice: "User Can't be added to project. "
     end
   end
 
   def remove_user
-    @user = User.find(params[:user_id])
-    authorize set_project
-    set_project.users.delete(@user)
-    redirect_to set_project
+    set_project.enrollments.destroy(set_user)
+    redirect_to project_path
   end
 
   private
@@ -74,5 +61,10 @@ class ProjectsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
+    authorize @project
+  end
+
+  def set_user
+    @user = User.find(params[:user_id])
   end
 end

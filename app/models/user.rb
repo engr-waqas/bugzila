@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_and_belongs_to_many :projects
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :timeoutable
-  validates_presence_of :name, :type
 
-  def manager?
-    type == 'Manager'
-  end
+  has_many :projects, foreign_key: 'creator_id', dependent: :destroy
+  has_many :user_projects, dependent: :destroy
+  has_many :enrollments, through: :user_projects, source: :project
+  has_many :bugs, dependent: :destroy
 
-  def developer?
-    type == 'Developer'
-  end
+  validates :name, :user_type, presence: true
 
-  def qa?
-    type == 'Qa'
-  end
+  enum user_type: { manager: 0, developer: 1, qa: 2 }
 end

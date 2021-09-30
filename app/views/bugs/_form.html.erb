@@ -2,7 +2,7 @@
 
   <div class="">
     <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, required: true, autofocus: true %>
   </div><br>
 
   <div class="">
@@ -17,12 +17,12 @@
 
   <div class="">
     <%= form.label :bug_type %>
-    <%= form.select :bug_type, ["Bug","Feature"] %>
+    <%= form.select :bug_type, [["Bug", :bug], ["Feature", :Feature]] %>
   </div><br>
 
   <div class="">
     <%= form.label :status %>
-    <%= form.select :status, ["New", "Started", "Resolved"] %>
+    <%= form.select :status, [["New", :newly], ["Started", :started], ["Resolved", :resolved]] %>
   </div><br>
 
   <div class="">

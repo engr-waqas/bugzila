@@ -27,8 +27,8 @@
   </div>
 
   <div class="field">
-    <%= f.label :type %><br>
-    <%= f.select :type, options_for_select(['Manager', 'Developer', 'Qa']) %>
+    <%= f.label :user_type %><br>
+    <%= f.select :user_type, [["Manager" , :manager] ,["Developer", :developer] , ["QA", :qa]] %>
   </div>
 
   <div class="actions"><br>

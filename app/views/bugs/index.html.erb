@@ -20,33 +20,20 @@
         <td><%= bug.deadline %></td>
         <td><%= bug.bug_type %></td>
         <td><%= bug.status %></td>
-        <% if current_user.qa? %>
-          <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
-          <% if bug.qa == current_user%>
-            <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: "btn btn-primary" %></td>
-          <% else %>
-            <td></td>
-          <% end %>
+
+        <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
+        <% if bug.creator == current_user%>
+          <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: "btn btn-primary" %></td>
           <td><%= link_to 'Destroy', project_bug_path(@project, bug), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
-
-        <% elsif current_user.developer? %>
-          <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
-          <% if bug.developer.nil? && bug.status == 'New'%>
-            <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), class: "btn btn-primary" %></td>
-          <% elsif bug.developer == current_user && bug.status == 'Started' %>
-            <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), class: "btn btn-secondary" %></td>
-          <% elsif bug.developer != current_user && bug.status == 'Started'%>
-            <td>Assigned to <%= bug.developer.name %></td>
-          <% elsif bug.status == 'Resolved'%>
-            <td>Resolved by <%= bug.developer.name %></td>
-          <% end %>
+        <% elsif bug.newly? && !current_user.qa?%>
+          <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), class: "btn btn-primary" %></td>
+        <% elsif bug.started? && bug.developer == current_user %>
+          <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), class: "btn btn-secondary" %></td>
         <% end %>
-
       </tr>
     <% end %>
   </tbody>
 </table>
-
 <br>
 <div class="align-center">
   <%= link_to 'Back', projects_path, class: "btn btn-secondary" %>

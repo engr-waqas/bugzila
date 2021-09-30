@@ -1,24 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+=> Ruby version
+  2.7.2
+=> Rails version
+  5.2
 
-Things you may want to cover:
+=> System dependencies
+  Devise
+  Pundit
+  Bootstrap
+  Jquery-rails
+  Mini_magick
+  Active storage
 
-* Ruby version
+=> Configuration
+  Devise/Mailor
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+=> Database creation
+  Postgres

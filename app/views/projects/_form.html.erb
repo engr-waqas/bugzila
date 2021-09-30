@@ -2,7 +2,7 @@
 
   <p>
     <%= form.label :title %><br>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, autofocus: true, required: true %>
   </p>
 
   <p>
@@ -15,3 +15,8 @@
   </p>
 
 <% end %>
+
+
+<div class="align-center">
+  <%= link_to 'Back', projects_path, class:"btn btn-secondary" %>
+</div>
