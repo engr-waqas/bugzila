@@ -3,66 +3,74 @@
 class BugsController < ApplicationController
   before_action :set_bug, except: %i[new index create]
   before_action :set_project, except: %i[update destroy]
-  after_action :verify_authorized, except: [], unless: :devise_controller?
+  before_action :authorize_bug, only: %i[edit update destroy assign change_status]
 
   def index
-    authorize @bugs = @project.bugs
+    @bugs = @project.bugs
   end
 
-  def show; end
+  def edit; end
 
   def new
-    authorize @bug = Bug.new(project: @project)
+    @bug = Bug.new(project: @project)
   end
 
   def create
-    authorize @bug = current_user.bugs.create(bug_params)
-    @bug.project = set_project
+    @bug = current_user.bugs.new(bug_params)
+    @bug.project = @project
+    authorize_bug
     if @bug.save
-      redirect_to project_bugs_path
+      redirect_to project_bugs_path, notice: 'Bug Created Successfully.'
     else
-      render 'new'
+      render 'new', notice: 'Bug Creation Unsuccessful.'
     end
   end
 
   def update
-    if set_bug.update(bug_params)
-      redirect_to project_bugs_path
+    if @bug.update(bug_params)
+      redirect_to project_bugs_path, notice: 'Bug Updated Successfully.'
     else
-      render 'edit'
+      render 'edit', notice: 'Bug Updation Unsuccessful.'
     end
   end
 
   def destroy
-    authorize set_bug.destroy
-    redirect_to project_bugs_path
+    if @bug.destroy
+      redirect_to project_bugs_path, notice: 'Bug Deleted Successfully.'
+    else
+      redirect_to project_bugs_path, notice: 'Bug Deletion Unsuccessful.'
+    end
   end
 
   def assign
     @user = User.find(params[:user_id])
-    if set_bug.update(developer_id: @user.id, status: :started)
-      redirect_to project_bugs_path(@project)
+    if @bug.update(developer: @user, status: :started)
+      redirect_to project_bugs_path(@project), notice: 'Bug Assigned Successfully.'
     else
-      redirect_to project_bugs_path(@project), notice: 'Not success'
+      redirect_to project_bugs_path(@project), notice: 'Bug assign Unsuccessful'
     end
   end
 
   def change_status
-    if set_bug.update(status: :resolved)
-      redirect_to project_bugs_path(@project)
+    if @bug.update(status: :resolved)
+      redirect_to project_bugs_path(@project), notice: 'Bug Status Changed.'
     else
-      redirect_to project_bugs_path(@project), notice: 'Not Success'
+      redirect_to project_bugs_path(@project), notice: 'Bug Status not changed.'
     end
   end
 
   private
 
   def set_bug
-    authorize @bug = Bug.find(params[:id])
+    @bug = Bug.find(params[:id])
   end
 
   def set_project
     @project = Project.find(params[:project_id])
+  end
+
+  def authorize_bug
+    authorize @bug
   end
 
   def bug_params

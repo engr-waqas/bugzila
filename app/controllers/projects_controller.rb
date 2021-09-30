@@ -3,7 +3,7 @@
 class ProjectsController < ApplicationController
   before_action :set_project, except: %i[index new create]
   before_action :set_user, only: %i[add_user remove_user]
-  after_action :verify_authorized, except: %i[index new], unless: :devise_controller?
+  before_action :authorize_project, only: %i[edit update destroy add_user remove_user]
 
   def index
     @projects = current_user.projects if current_user.manager?
@@ -11,46 +11,56 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @users = @project.enrollments
+    @users = User.where.not(user_type: :manager) if current_user.manager?
+    @users = @project.enrollments unless current_user.manager?
   end
+
+  def edit; end
 
   def new
     @project = current_user.projects.new
   end
 
   def create
-    authorize @project = current_user.projects.create(project_params)
+    @project = current_user.projects.new(project_params)
+    authorize_project
     if @project.save
       redirect_to projects_path, notice: 'Project Created Successfully.'
     else
-      render 'new'
+      render 'new', notice: 'Project Creation Unsuccessful.'
     end
   end
 
   def update
-    if set_project.update(project_params)
-      redirect_to projects_path, notice: 'Project Updated Successfully.'
+    if @project.update(project_params)
+      redirect_to project_path, notice: 'Project Updated Successfully.'
     else
-      render 'edit'
+      render 'edit', notice: 'Project Updation Unsuccessful.'
     end
   end
 
   def destroy
-    set_project.destroy
-    redirect_to projects_path, notice: 'Project Deleted Successfully.'
+    if @project.destroy
+      redirect_to projects_path, notice: 'Project Deleted Successfully.'
+    else
+      redirect_to projects_path, notice: 'Project Deleted Unsuccessful.'
+    end
   end
 
   def add_user
-    if set_project.enrollments << set_user
-      redirect_to project_path
+    if @project.enrollments << @user
+      redirect_to project_path, notice: 'User added successfully to project.'
     else
-      redirect_to project_path, notice: "User Can't be added to project. "
+      redirect_to project_path, notice: "User Can't be added to project."
     end
   end
 
   def remove_user
-    set_project.enrollments.destroy(set_user)
-    redirect_to project_path
+    if @project.enrollments.destroy(@user)
+      redirect_to project_path, notice: 'User removed successfully from project.'
+    else
+      redirect_to project_path, notice: 'User removal unsuccessful.'
+    end
   end
 
   private
@@ -61,6 +71,9 @@ class ProjectsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
+  end
+
+  def authorize_project
     authorize @project
   end
 

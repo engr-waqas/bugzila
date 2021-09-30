@@ -22,16 +22,6 @@ class ProjectPolicy < ApplicationPolicy
     update?
   end
 
-  def show?
-    if user.manager?
-      record.creator == user
-    elsif user.developer?
-      record.enrollments.exists?(user.id)
-    else
-      true
-    end
-  end
-
   def add_user?
     update?
   end

@@ -8,12 +8,6 @@ class BugPolicy < ApplicationPolicy
       @user  = user
       @scope = scope
     end
-
-    def resolve; end
-  end
-
-  def index?
-    user.qa? || user.developer?
   end
 
   def new?
@@ -29,11 +23,7 @@ class BugPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record.creator == user
-  end
-
-  def show?
-    index?
+    update?
   end
 
   def assign?
