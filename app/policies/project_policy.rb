@@ -14,6 +14,14 @@ class ProjectPolicy < ApplicationPolicy
     user.manager?
   end
 
+  def show?
+    if user.manager?
+      record.creator == user
+    else
+      true
+    end
+  end
+
   def update?
     user.manager? && record.creator == user
   end

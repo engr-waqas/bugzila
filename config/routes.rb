@@ -18,4 +18,6 @@ Rails.application.routes.draw do
   end
 
   root to: 'home#index'
+
+  match '*path' => redirect('/'), via: %i[get post]
 end

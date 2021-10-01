@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ProjectsController < ApplicationController
-  before_action :set_project, except: %i[index new create]
-  before_action :set_user, only: %i[add_user remove_user]
-  before_action :authorize_project, only: %i[edit update destroy add_user remove_user]
+  before_action :find_project, except: %i[index new create]
+  before_action :find_user, only: %i[add_user remove_user]
+  before_action :authorize_project, only: %i[edit show update destroy add_user remove_user]
 
   def index
     @projects = current_user.projects if current_user.manager?
@@ -11,14 +11,14 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @users = User.where.not(user_type: :manager) if current_user.manager?
+    @users = Project.users_except_manager if current_user.manager?
     @users = @project.enrollments unless current_user.manager?
   end
 
   def edit; end
 
   def new
-    @project = current_user.projects.new
+    @project = Project.new
   end
 
   def create
@@ -69,15 +69,15 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:title, :description)
   end
 
-  def set_project
-    @project = Project.find(params[:id])
+  def find_project
+    @project = Project.find_by(id: params[:id])
   end
 
   def authorize_project
     authorize @project
   end
 
-  def set_user
-    @user = User.find(params[:user_id])
+  def find_user
+    @user = User.find_by(id: params[:user_id])
   end
 end

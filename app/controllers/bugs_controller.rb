@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class BugsController < ApplicationController
-  before_action :set_bug, except: %i[new index create]
-  before_action :set_project, except: %i[update destroy]
+  before_action :find_bug, except: %i[new index create]
+  before_action :find_project, except: %i[update destroy]
   before_action :authorize_bug, only: %i[edit update destroy assign change_status]
 
   def index
@@ -12,7 +12,7 @@ class BugsController < ApplicationController
   def edit; end
 
   def new
-    @bug = Bug.new(project: @project)
+    @bug = Bug.new
   end
 
   def create
@@ -43,7 +43,7 @@ class BugsController < ApplicationController
   end
 
   def assign
-    @user = User.find(params[:user_id])
+    @user = User.find_by(id: params[:user_id])
     if @bug.update(developer: @user, status: :started)
       redirect_to project_bugs_path(@project), notice: 'Bug Assigned Successfully.'
     else
@@ -61,12 +61,12 @@ class BugsController < ApplicationController
 
   private
 
-  def set_bug
-    @bug = Bug.find(params[:id])
+  def find_bug
+    @bug = Bug.find_by(id: params[:id])
   end
 
-  def set_project
-    @project = Project.find(params[:project_id])
+  def find_project
+    @project = Project.find_by(id: params[:project_id])
   end
 
   def authorize_bug

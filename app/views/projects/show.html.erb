@@ -20,7 +20,7 @@
 	<% end %>
 
 	<% if policy(@project).update? && @project.enrollments.exists?(user.id) %>
-		<td><%= link_to 'Remove from Project', remove_user_project_path(@project, user_id: user.id), class: "btn btn-danger" %></td></tr>
+		<td><%= link_to 'Remove from Project', remove_user_project_path(@project, user_id: user.id), class: "btn btn-danger", data: { confirm: 'Are you sure?' }%></td></tr>
 	<% elsif policy(@project).remove_user? %>
 	 	<td><%= link_to 'Add user to Project', add_user_project_path(@project, user_id: user.id), class: "btn btn-success" %></td></tr>
 	<% end %>

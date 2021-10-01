@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionController::RoutingError, with: :route_not_matched
 
   protected
 
@@ -23,5 +24,13 @@ class ApplicationController < ActionController::Base
 
   def record_not_found
     redirect_to(root_path, alert: 'Record Not Found! ')
+  end
+
+  def route_not_matched
+    if user_signed_in?
+      redirect_to(projects_path, alert: 'Route did not matched! ')
+    else
+      redirect_to(root_path, alert: 'Route did not matched! ')
+    end
   end
 end
