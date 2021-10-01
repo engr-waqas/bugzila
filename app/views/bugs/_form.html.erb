@@ -28,9 +28,9 @@
   <div >
     <%= form.label :screenshot %><br>
     <% if @bug.screenshot.attached? %>
-      <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), accept: 'image/pgn, image/gif'%>
+      <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), alt: "#{@bug.title}"%>
     <% end %>
-    <%= form.file_field :screenshot, accept: Bug::IMG_TYPE %>
+    <%= form.file_field :screenshot, accept: Bug::IMG_TYPE, direct_upload: true %>
   </div><br>
 
   <div >

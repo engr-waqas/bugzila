@@ -49,3 +49,7 @@ gem 'mini_magick'
 gem 'bootstrap'
 
 gem 'jquery-rails'
+
+gem 'cloudinary'
+
+gem 'carrierwave'
