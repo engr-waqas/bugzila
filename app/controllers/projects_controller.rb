@@ -25,7 +25,10 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.new(project_params)
     authorize_project
     if @project.save
-      redirect_to projects_path, notice: 'Project Created Successfully.'
+      respond_to do |format|
+        format.html {redirect_to projects_path, notice: 'Project Created Successfully.'}
+        format.js
+      end
     else
       render 'new', notice: 'Project Creation Unsuccessful.'
     end
@@ -41,26 +44,21 @@ class ProjectsController < ApplicationController
 
   def destroy
     if @project.destroy
-      redirect_to projects_path, notice: 'Project Deleted Successfully.'
+      respond_to do |format|
+        redirect_to projects_path, notice: 'Project Deleted Successfully.'
+        format.js
+      end
     else
       redirect_to projects_path, notice: 'Project Deleted Unsuccessful.'
     end
   end
 
   def add_user
-    if @project.enrollments << @user
-      redirect_to project_path, notice: 'User added successfully to project.'
-    else
-      redirect_to project_path, notice: "User Can't be added to project."
-    end
+    @project.enrollments << @user
   end
 
   def remove_user
-    if @project.enrollments.destroy(@user)
-      redirect_to project_path, notice: 'User removed successfully from project.'
-    else
-      redirect_to project_path, notice: 'User removal unsuccessful.'
-    end
+    @project.enrollments.destroy(@user)
   end
 
   private

@@ -1,0 +1,2 @@
+$("#assign_<%= @user.id%>").replaceWith("<%= j link_to 'Mark Resolved', change_status_project_bug_path(@project, @bug),
+id: "resolve_#{current_user.id}", class: "btn btn-secondary", data: { confirm: 'Are you sure?' }, remote: true %></td>");

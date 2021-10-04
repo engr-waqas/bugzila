@@ -36,7 +36,10 @@ class BugsController < ApplicationController
 
   def destroy
     if @bug.destroy
-      redirect_to project_bugs_path, notice: 'Bug Deleted Successfully.'
+      respond_to do |format|
+        redirect_to project_bugs_path, notice: 'Bug Deleted Successfully.'
+        format.js
+      end
     else
       redirect_to project_bugs_path, notice: 'Bug Deletion Unsuccessful.'
     end
@@ -44,19 +47,11 @@ class BugsController < ApplicationController
 
   def assign
     @user = User.find_by(id: params[:user_id])
-    if @bug.update(developer: @user, status: :started)
-      redirect_to project_bugs_path(@project), notice: 'Bug Assigned Successfully.'
-    else
-      redirect_to project_bugs_path(@project), notice: 'Bug assign Unsuccessful'
-    end
+    @bug.update(developer: @user, status: :started)
   end
 
   def change_status
-    if @bug.update(status: :resolved)
-      redirect_to project_bugs_path(@project), notice: 'Bug Status Changed.'
-    else
-      redirect_to project_bugs_path(@project), notice: 'Bug Status not changed.'
-    end
+    @bug.update(status: :resolved)
   end
 
   private

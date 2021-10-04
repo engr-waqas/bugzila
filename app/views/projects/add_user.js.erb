@@ -1,0 +1,2 @@
+$("#add_<%= @user.id%>").replaceWith("<%= j link_to 'Remove from Project', remove_user_project_path(@project, user_id: @user.id),
+  class: "btn btn-danger", id: "remove_#{@user.id}", data: { confirm: 'Are you sure?' }, remote: true %>");

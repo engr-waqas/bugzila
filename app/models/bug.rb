@@ -18,10 +18,8 @@ class Bug < ApplicationRecord
   private
 
   def screenshot_type
-    if screenshot.attached?
-      unless screenshot.content_type.in?(%('image/png image/gif'))
-        errors.add(:screenshot, 'must be a PNG or GIF!')
-      end
+    if screenshot.attached? && !screenshot.content_type.in?(%('image/png image/gif'))
+      errors.add(:screenshot, 'must be a PNG or GIF!')
     end
   end
 end

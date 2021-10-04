@@ -1,13 +1,14 @@
 <h1>Bugs in <%= @project.title%></h1><br>
-<table class="container">
+<table>
   <thead>
     <tr>
       <th></th>
       <th>Title</th>
       <th>Description</th>
       <th>Deadline</th>
-      <th>Bug type</th>
+      <th>Bug Type</th>
       <th>Status</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -21,14 +22,15 @@
         <td><%= bug.bug_type %></td>
         <td><%= bug.status %></td>
 
-        <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-success" %></td>
+        <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-info" %></td>
         <% if policy(bug).update? %>
           <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: "btn btn-primary" %></td>
-          <td><%= link_to 'Destroy', project_bug_path(@project, bug), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Destroy', project_bug_path(@project, bug),
+          class: "btn btn-danger destroy", method: :delete, data: { confirm: 'Are you sure?' }, remote: true %></td>
         <% elsif policy(bug).assign? %>
-          <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), class: "btn btn-primary" %></td>
+          <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), id: "assign_#{current_user.id}", class: "btn btn-primary", remote: true %></td>
         <% elsif policy(bug).change_status? %>
-          <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), class: "btn btn-secondary", data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), id: "resolve_#{current_user.id}", class: "btn btn-secondary", data: { confirm: 'Are you sure?' }, remote: true %></td>
         <% end %>
       </tr>
     <% end %>

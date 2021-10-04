@@ -1,0 +1,13 @@
+<tr>
+  <td></td>
+  <td><%= project.title %></td>
+  <td><%= project.description %></td>
+  <td><%= link_to 'Detail', project_path(project), class: "btn btn-info" %> </td>
+  <% if policy(:project).create? %>
+    <td><%= link_to 'Edit', edit_project_path(project), class: "btn btn-primary" %></td>
+    <td><%= link_to 'Destroy', project, class: "btn btn-danger destroy", method: :delete,
+    data: { confirm: 'Are you sure?' }, remote: true %></td>
+  <% else %>
+    <td><%= link_to "Manage Bugs", project_bugs_path(project), class: "btn btn-primary" %></td>
+  <% end%>
+</tr>

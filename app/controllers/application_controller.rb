@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name user_type])
-    devise_parameter_sanitizer.permit(:account_update, keys: %i[name user_type])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name])
   end
 
   private
@@ -28,9 +28,9 @@ class ApplicationController < ActionController::Base
 
   def route_not_matched
     if user_signed_in?
-      redirect_to(projects_path, alert: 'Route did not matched! ')
+      redirect_to(projects_path, notice: 'Route did not matched! ')
     else
-      redirect_to(root_path, alert: 'Route did not matched! ')
+      redirect_to(root_path, notice: 'Route did not matched! ')
     end
   end
 end

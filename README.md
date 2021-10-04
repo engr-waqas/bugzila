@@ -1,6 +1,6 @@
 # README
 
-# Name
+# Project Title
  -  Bugzilla
 
 # Description
@@ -20,17 +20,24 @@
   - Mini_magick for Image variants
   - Active storage for image upload
   - Postgresql database
+  - Cloudinary for image upload
+  - Rubocop for best practices in rails
 
 # Configuration
- - configuration for devise
+ - Mailer configuration in 'development.rb' file
+ - Rubocop configuration in 'rubocop.yml' file
+ - Cloudinary configuration in 'cloudinary.yml' file
+
 
 # Database creation
   - Credentials for Postgresql
   - Postgresql database by 'rails db:create'
-  - Fake data dumping by 'rails db:seed'
+  - Dumy data in 'seed.rb' file
 
 # Author
- -  M Waqas
+ - Name: M Waqas
+ - Email: mohammad.waqas@devsinc.com
 
 # Project Status/type
- -  Test-Project
+ - Ruby on Rails Test-Project
+ - Deployed here on Heroku: https://bugzila-dev-project.herokuapp.com/

@@ -1,30 +1,30 @@
-<h1><%= @project.title %></h1>
-<p><strong>Description:</strong>
-  <%= @project.description %></p>
+<h1 class="align-center"><%= @project.title %></h1>
+<p><strong>Description:</strong> <%= @project.description %></p>
+<p><strong>Project Manager:</strong> <%= @project.creator.name %> (<%= @project.creator.email%>)</p>
 <br><h1>All Members</h1>
-<table>
+<table id="users">
   <thead>
     <tr>
       <th>Name</th>
       <th>Email</th>
       <th>User Type</th>
+      <% if current_user.manager? %><th>Action</th><% end %>
     </tr>
   </thead>
 	<tbody>
-<% @users.each do |user|%>
-  <tr>
-	<% if true %>
-		<td><%= user.name %></td>
-	  <td><%= user.email %></td>
-	  <td><%= user.user_type %></td>
-	<% end %>
+  	<% @users.each do |user| %>
+      <tr>
+      	<td><%= user.name %></td>
+      	<td><%= user.email %></td>
+      	<td><%= user.user_type %></td>
 
-	<% if policy(@project).update? && @project.enrollments.exists?(user.id) %>
-		<td><%= link_to 'Remove from Project', remove_user_project_path(@project, user_id: user.id), class: "btn btn-danger", data: { confirm: 'Are you sure?' }%></td></tr>
-	<% elsif policy(@project).remove_user? %>
-	 	<td><%= link_to 'Add user to Project', add_user_project_path(@project, user_id: user.id), class: "btn btn-success" %></td></tr>
-	<% end %>
-<% end %>
+      	<% if policy(@project).add_user? && @project.enrollments.exists?(user.id) %>
+      		<td><%= link_to 'Remove from Project', remove_user_project_path(@project, user_id: user.id), class: "btn btn-danger", id: "remove_#{user.id}", data: { confirm: 'Are you sure?' }, remote: true %> </td>
+      	<% elsif policy(@project).remove_user? %>
+      	 	<td><%= link_to 'Add user to Project', add_user_project_path(@project, user_id: user.id), class: "btn btn-success", id: "add_#{user.id}", remote: true %></td>
+      	<% end %>
+      </tr>
+    <% end%>
 </tbody></table>
 
 <br><br>
