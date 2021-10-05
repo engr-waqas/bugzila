@@ -1,28 +1,82 @@
 # frozen_string_literal: true
 
-User.create(name: 'Abdullah', email: 'abdullah@gmail.com', password: 'abdullah123', user_type: :manager)
-User.create(name: 'Ali', email: 'Ali@gmail.com', password: 'aaaaaa', user_type: :manager)
-User.create(name: 'Hassan', email: 'hassan@gmail.com', password: 'hassan123', user_type: :developer)
-User.create(name: 'Hassam', email: 'hassam@gmail.com', password: 'aaaaaa', user_type: :developer)
-User.create(name: 'Waqas', email: 'waqas@gmail.com', password: 'waqas123', user_type: :qa)
-User.create(name: 'Waqar', email: 'waqar@gmail.com', password: 'aaaaaa', user_type: :qa)
+puts('Creating Users...')
+User.find_or_create_by(email: 'abdullah@gmail.com', user_type: :manager) do |user|
+  user.name = 'Abdullah'
+  user.password = 'abdullah123'
+end
+User.find_or_create_by(email: 'Ali@gmail.com', user_type: :manager) do |user|
+  user.name = 'Ali'
+  user.password = 'ali123'
+end
+User.find_or_create_by(email: 'hassan@gmail.com', user_type: :developer) do |user|
+  user.name = 'Hassan'
+  user.password = 'hassan123'
+end
+User.find_or_create_by(email: 'hassam@gmail.com', user_type: :developer) do |user|
+  user.name = 'Hassam'
+  user.password = 'hassam123'
+end
+User.find_or_create_by(email: 'waqas@gmail.com', user_type: :qa) do |user|
+  user.name = 'Waqas'
+  user.password = 'waqas123'
+end
+User.find_or_create_by(email: 'waqar@gmail.com', user_type: :qa) do |user|
+  user.name = 'Waqar'
+  user.password = 'waqar123'
+end
+puts('Users Created!')
 
-User.first.projects.create(title: 'Grosery Store', description: 'Buy and sell all kinds of grosery items.')
-User.first.projects.create(title: 'Shopping App', description: 'A small shopping app to buy.')
-User.last.projects.create(title: 'Doorstep Services', description: 'Physical services at Doorstep.')
-User.last.projects.create(title: 'wHealth', description: 'Appointment booking.')
+puts('Creating Projects...')
+User.first.projects.find_or_create_by(title: 'Grosery Store',
+                                      description: 'Buy and sell all kinds of grosery items.')
+User.first.projects.find_or_create_by(title: 'Shopping App', description: 'A small shopping app to buy.')
+User.last.projects.find_or_create_by(title: 'Doorstep Services',
+                                     description: 'Physical services at Doorstep.')
+User.last.projects.find_or_create_by(title: 'wHealth', description: 'Appointment booking.')
+puts('Projects Created!')
 
-User.last(2).first.bugs.create(title: 'Mutable', description: 'Symbol error.',
-                               deadline: '2022-09-29 13:01:54', bug_type: :bug, status: :newly, project_id: 1)
-User.last(2).first.bugs.create(title: 'Format', description: 'Email format error.',
-                               deadline: '2022-09-29 13:01:54', bug_type: :feature, status: :started,
-                               project_id: 1, developer_id: 3)
-User.last(2).first.bugs.create(title: 'Multiple connections', description: 'Multiple databases.',
-                               deadline: '2022-09-29 13:01:54', bug_type: :bug, status: :resolved,
-                               project_id: 2, developer_id: 3)
-User.last.bugs.create(title: 'Fuction', description: 'Transformation.', deadline: '2022-09-29 13:01:54',
-                      bug_type: :bug, status: :newly, project_id: 2)
-User.last.bugs.create(title: 'Contacl list', description: 'Default list.', deadline: '2022-09-29 13:01:54',
-                      bug_type: :feature, status: :started, project_id: 3, developer_id: 4)
-User.last.bugs.create(title: 'Overflow', description: 'Limit crossing.', deadline: '2022-09-29 13:01:54',
-                      bug_type: :bug, status: :resolved, project_id: 4, developer_id: 4)
+puts('Creating Bugs...')
+User.last(2).first.bugs.find_or_create_by(title: 'Mutable', bug_type: :bug) do |bug|
+  bug.description = 'Symbol error.'
+  bug.deadline = Time.now.getlocal + 1.week
+  bug.bug_type = Bug.bug_types.keys.first
+  bug.status = Bug.statuses.keys.first
+  bug.project_id = Project.first.id
+end
+User.last(2).first.bugs.find_or_create_by(title: 'Format', bug_type: :bug) do |bug|
+  bug.description = 'Email format error.'
+  bug.deadline = Time.now.getlocal + 1.week
+  bug.bug_type = Bug.bug_types.keys.first
+  bug.status = Bug.statuses.keys.first
+  bug.project_id = Project.first.id
+end
+User.last(2).first.bugs.find_or_create_by(title: 'Multiple connections', bug_type: :bug) do |bug|
+  bug.description = 'Multiple databases.'
+  bug.deadline = Time.now.getlocal + 1.week
+  bug.bug_type = Bug.bug_types.keys.first
+  bug.status = Bug.statuses.keys.first
+  bug.project_id = Project.first.id
+end
+User.last.bugs.find_or_create_by(title: 'Fuction') do |bug|
+  bug.description = 'Transformation.'
+  bug.deadline = Time.now.getlocal + 1.week
+  bug.bug_type = Bug.bug_types.keys.last
+  bug.status = Bug.statuses.keys.first
+  bug.project_id = Project.last.id
+end
+User.last.bugs.find_or_create_by(title: 'Contacl list') do |bug|
+  bug.description = 'Default list.'
+  bug.deadline = Time.now.getlocal + 1.week
+  bug.bug_type = Bug.bug_types.keys.last
+  bug.status = Bug.statuses.keys.first
+  bug.project_id = Project.last.id
+end
+User.last.bugs.find_or_create_by(title: 'Overflow') do |bug|
+  bug.description = 'Limit crossing.'
+  bug.deadline = Time.now.getlocal + 1.week
+  bug.bug_type = Bug.bug_types.keys.last
+  bug.status = Bug.statuses.keys.first
+  bug.project_id = Project.last.id
+end
+puts('Bugs Created!')

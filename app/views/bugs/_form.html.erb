@@ -27,14 +27,14 @@
 
   <div >
     <%= form.label :screenshot %><br>
-    <% if @bug.screenshot.attached? %>
+    <% if attached?(@bug) %>
       <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), alt: "#{@bug.title}"%>
     <% end %>
     <%= form.file_field :screenshot, accept: Bug::IMG_TYPE, direct_upload: true %>
   </div><br>
 
-  <div class="align-center">
-    <%= link_to 'Cancel', project_bugs_path, class: "btn btn-secondary" %>
-    <%= form.submit class:"btn btn-success"%>
+  <div class='align-center'>
+    <%= link_to 'Cancel', project_bugs_path, class: 'btn btn-secondary' %>
+    <%= form.submit class:'btn btn-success'%>
   </div><br>
 <% end %>

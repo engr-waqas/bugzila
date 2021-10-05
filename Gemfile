@@ -40,16 +40,10 @@ end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-gem 'devise'
-
-gem 'pundit'
-
-gem 'mini_magick'
-
 gem 'bootstrap'
-
-gem 'jquery-rails'
-
-gem 'cloudinary'
-
 gem 'carrierwave'
+gem 'cloudinary'
+gem 'devise'
+gem 'jquery-rails'
+gem 'mini_magick'
+gem 'pundit'

@@ -19,18 +19,18 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    redirect_to(root_path, alert: 'You are not authorized to perform this action. ')
+    redirect_to(root_path, alert: 'You are not authorized to perform this action!')
   end
 
   def record_not_found
-    redirect_to(root_path, alert: 'Record Not Found! ')
+    redirect_to(root_path, alert: 'Record Not Found!')
   end
 
   def route_not_matched
     if user_signed_in?
-      redirect_to(projects_path, notice: 'Route did not matched! ')
+      redirect_to(projects_path, notice: 'Route not found!')
     else
-      redirect_to(root_path, notice: 'Route did not matched! ')
+      redirect_to(root_path, notice: 'Route not found!')
     end
   end
 end

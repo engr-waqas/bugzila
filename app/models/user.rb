@@ -12,4 +12,8 @@ class User < ApplicationRecord
   validates :name, :user_type, presence: true
 
   enum user_type: { manager: 0, developer: 1, qa: 2 }
+
+  def self.except_manager
+    User.where.not(user_type: :manager)
+  end
 end

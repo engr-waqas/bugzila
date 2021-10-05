@@ -10,31 +10,39 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
-  def create?
+  def index?
+    user.manager? || user.developer? || user.qa?
+  end
+
+  def new?
     user.manager?
   end
 
+  def create?
+    new?
+  end
+
   def show?
-    if user.manager?
-      record.creator == user
-    else
-      true
-    end
+    record.creator == user || record.enrollments.exists?(user.id)
+  end
+
+  def edit?
+    record.creator == user
   end
 
   def update?
-    user.manager? && record.creator == user
+    edit?
   end
 
   def destroy?
-    update?
+    edit?
   end
 
   def add_user?
-    update?
+    edit?
   end
 
   def remove_user?
-    destroy?
+    edit?
   end
 end

@@ -7,8 +7,4 @@ class Project < ApplicationRecord
   belongs_to :creator, class_name: 'User'
 
   validates :title, presence: true
-
-  def self.users_except_manager
-    User.where.not(user_type: :manager)
-  end
 end

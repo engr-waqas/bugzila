@@ -1,21 +1,22 @@
-<h1 class="align-left">Your Projects</h1>
+<h1 class='align-left'>Your Projects</h1>
 <br>
-<table id="projects">
+<table id='projects'>
   <thead>
     <tr>
       <th></th>
       <th>Title</th>
       <th>Description</th>
-      <th colspan="3"></th>
+      <th colspan='3'></th>
     </tr>
   </thead>
-  <tbody id="table-body">
+  <tbody id='table-body'>
     <%= render partial: 'project', collection: @projects %>
   </tbody>
 </table>
 
-<br><div class="align-center", id="new-project">
-  <% if policy(:project).create? %>
-    <%= link_to 'Create New Project', new_project_path, class: "btn btn-light", remote: true %>
-  <% end%>
-</div><br>
+<br>
+<div class='align-center', id='new-project'>
+  <% if can_create? %>
+    <%= link_to 'Create New Project', new_project_path, class: 'btn btn-light', remote: true %>
+  <% end %>
+</div>

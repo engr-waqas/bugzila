@@ -37,9 +37,9 @@ ActiveRecord::Schema.define(version: 2021_09_30_163224) do
   end
 
   create_table "bugs", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "title", default: "", null: false
     t.text "description"
-    t.datetime "deadline"
+    t.datetime "deadline", default: "2021-11-04 12:37:30", null: false
     t.integer "bug_type", default: 0
     t.integer "status", default: 0
     t.bigint "project_id", null: false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2021_09_30_163224) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "title", default: "", null: false
     t.text "description"
     t.bigint "creator_id", null: false
     t.datetime "created_at", null: false
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 2021_09_30_163224) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "name", null: false
+    t.string "name", default: "", null: false
     t.integer "user_type", default: 0, null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"

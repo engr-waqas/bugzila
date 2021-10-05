@@ -10,6 +10,10 @@ class BugPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    user.developer? || user.qa?
+  end
+
   def new?
     user.qa?
   end
@@ -18,19 +22,27 @@ class BugPolicy < ApplicationPolicy
     new?
   end
 
-  def update?
+  def edit?
     record.creator == user
   end
 
+  def show?
+    index?
+  end
+
+  def update?
+    edit?
+  end
+
   def destroy?
-    update?
+    edit?
   end
 
   def assign?
-    user.developer? && record.newly?
+    user.developer?
   end
 
   def change_status?
-    record.developer == user && record.started?
+    record.developer == user
   end
 end

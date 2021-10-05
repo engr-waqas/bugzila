@@ -5,14 +5,14 @@ Rails.application.routes.draw do
 
   resources :projects do
     member do
-      get :add_user
-      get :remove_user
+      patch :add_user
+      delete :remove_user
     end
 
     resources :bugs do
       member do
-        get :assign
-        get :change_status
+        patch :assign
+        patch :change_status
       end
     end
   end

@@ -8,7 +8,7 @@
       <th>Deadline</th>
       <th>Bug Type</th>
       <th>Status</th>
-      <th colspan="2"></th>
+      <th colspan='2'></th>
     </tr>
   </thead>
 
@@ -22,24 +22,25 @@
         <td><%= bug.bug_type %></td>
         <td><%= bug.status %></td>
 
-        <td><%= link_to 'Detail', project_bug_path(@project, bug), class: "btn btn-info" %></td>
-        <% if policy(bug).update? %>
-          <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: "btn btn-primary" %></td>
+        <td><%= link_to 'Detail', project_bug_path(@project, bug), class: 'btn btn-info' %></td>
+        <% if can_modify?(bug) %>
+          <td><%= link_to 'Edit', edit_project_bug_path(@project, bug), class: 'btn btn-primary' %></td>
           <td><%= link_to 'Destroy', project_bug_path(@project, bug),
-          class: "btn btn-danger destroy", method: :delete, data: { confirm: 'Are you sure?' }, remote: true %></td>
-        <% elsif policy(bug).assign? %>
-          <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), id: "assign_#{current_user.id}", class: "btn btn-primary", remote: true %></td>
-        <% elsif policy(bug).change_status? %>
-          <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), id: "resolve_#{current_user.id}", class: "btn btn-secondary", data: { confirm: 'Are you sure?' }, remote: true %></td>
+          class: 'btn btn-danger destroy', method: :delete, data: { confirm: 'Are you sure?' }, remote: true %></td>
+        <% elsif can_assign?(bug) %>
+          <td><%= link_to 'Assign me', assign_project_bug_path(@project, bug, user_id: current_user.id), id: "assign_#{current_user.id}", method: :patch, class: 'btn btn-primary', remote: true %></td>
+        <% elsif can_resolve?(bug) %>
+          <td><%= link_to 'Mark Resolved', change_status_project_bug_path(@project, bug), id: "resolve_#{current_user.id}", class: 'btn btn-secondary', method: :patch, data: { confirm: 'Are you sure?' }, remote: true %></td>
         <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
+
 <br>
-<div class="align-center">
-  <%= link_to 'Back', projects_path, class: "btn btn-secondary" %>
-  <% if policy(:bug).new? %>
-    <%= link_to 'Report Bug', new_project_bug_path, class: "btn btn-light" %>
+<div class='align-center'>
+  <%= link_to 'Back', projects_path, class: 'btn btn-secondary' %>
+  <% if can_report? %>
+    <%= link_to 'Report Bug', new_project_bug_path, class: 'btn btn-light' %>
   <% end %>
 </div>
