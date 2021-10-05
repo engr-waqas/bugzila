@@ -3,6 +3,7 @@
 class BugsController < ApplicationController
   before_action :find_bug, except: %i[new index create]
   before_action :find_project, except: %i[update destroy]
+  before_action :find_user, only: %i[assign]
   before_action :authorize_bug
 
   def index
@@ -44,16 +45,19 @@ class BugsController < ApplicationController
   end
 
   def assign
-    @user = User.find_by(id: params[:user_id])
-    if @user.present?
-      @bug.update(developer: @user, status: Bug.statuses[:started])
-    else
-      redirect_to project_bugs_path, notice: 'User not found!'
-    end
+    flash[:nitice] = if @bug.update(developer: @user, status: Bug.statuses[:started])
+                       'User assigned successfully!'
+                     else
+                       "User can't assign Bug!"
+                     end
   end
 
   def change_status
-    @bug.update(status: Bug.statuses[:resolved])
+    flash[:nitice] = if @bug.update(status: Bug.statuses[:resolved])
+                       'Status changed successfully!'
+                     else
+                       "Status can't be changed!"
+                     end
   end
 
   private
@@ -66,6 +70,11 @@ class BugsController < ApplicationController
   def find_project
     @project = Project.find_by(id: params[:project_id])
     redirect_to project_bugs_path, notice: 'Project not found!' if @project.nil?
+  end
+
+  def find_user
+    @user = User.find_by(id: params[:user_id])
+    redirect_to project_bugs_path, notice: 'User not found!' if @user.nil?
   end
 
   def authorize_bug

@@ -12,6 +12,9 @@
 # Rails version
  -  5.2.6
 
+ # Postgresql version
+ -  12
+
 # System dependencies
   - Devise for authontication
   - Pundit for authorization

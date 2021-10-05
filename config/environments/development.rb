@@ -16,7 +16,8 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  # if (Rails.root / 'tmp' / 'caching-dev.txt').exist?
+  if Rails.root.join('tmp / caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
@@ -67,8 +68,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    user_name: 'mohammad.waqas@devsinc.com',
-    password: 'Waqas111-',
+    user_name: Rails.application.credentials.mail[:user_name],
+    password: Rails.application.credentials.mail[:password],
     authentication: 'plain',
     enable_starttls_auto: true,
     domain: 'devsinc.com'

@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :timeoutable
 
-  has_many :projects, foreign_key: 'creator_id', dependent: :destroy
+  has_many :projects, foreign_key: :creator_id, dependent: :destroy, inverse_of: :creator
   has_many :user_projects, dependent: :destroy
   has_many :enrollments, through: :user_projects, source: :project
   has_many :bugs, dependent: :destroy
