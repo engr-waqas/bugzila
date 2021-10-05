@@ -45,7 +45,7 @@ class BugsController < ApplicationController
   end
 
   def assign
-    flash[:nitice] = if @bug.update(developer: @user, status: Bug.statuses[:started])
+    flash[:notice] = if @bug.update(developer: @user, status: Bug.statuses[:started])
                        'User assigned successfully!'
                      else
                        "User can't assign Bug!"
@@ -53,7 +53,7 @@ class BugsController < ApplicationController
   end
 
   def change_status
-    flash[:nitice] = if @bug.update(status: Bug.statuses[:resolved])
+    flash[:notice] = if @bug.update(status: Bug.statuses[:resolved])
                        'Status changed successfully!'
                      else
                        "Status can't be changed!"

@@ -6,14 +6,14 @@ development:
   enhance_image_tag: true
   static_file_support: false
 production:
-  cloud_name: <%= Rails.application.credentials[:development][:cloud_name] %>
-  api_key: <%= Rails.application.credentials[:development][:api_key] %>
-  api_secret: <%= Rails.application.credentials[:development][:api_secret] %>
+  cloud_name: <%= Rails.application.credentials[:production][:cloud_name] %>
+  api_key: <%= Rails.application.credentials[:production][:api_key] %>
+  api_secret: <%= Rails.application.credentials[:production][:api_secret] %>
   enhance_image_tag: true
   static_file_support: true
 test:
-  cloud_name: <%= Rails.application.credentials[:development][:cloud_name] %>
-  api_key: <%= Rails.application.credentials[:development][:api_key] %>
-  api_secret: <%= Rails.application.credentials[:development][:api_secret] %>
+  cloud_name: <%= Rails.application.credentials[:test][:cloud_name] %>
+  api_key: <%= Rails.application.credentials[:test][:api_key] %>
+  api_secret: <%= Rails.application.credentials[:test][:api_secret] %>
   enhance_image_tag: true
   static_file_support: false

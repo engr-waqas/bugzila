@@ -53,7 +53,7 @@ class ProjectsController < ApplicationController
   end
 
   def add_user
-    flash[:nitice] = if @project.enrollments << @user
+    flash[:notice] = if @project.enrollments << @user
                        'User added successfully!'
                      else
                        'User not assigned!'
@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
   end
 
   def remove_user
-    flash[:nitice] = if @project.enrollments.destroy(@user)
+    flash[:notice] = if @project.enrollments.destroy(@user)
                        'User removed successfully!'
                      else
                        'User not removed!'
