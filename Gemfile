@@ -41,7 +41,6 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'bootstrap'
-gem 'carrierwave'
 gem 'cloudinary'
 gem 'devise'
 gem 'jquery-rails'
