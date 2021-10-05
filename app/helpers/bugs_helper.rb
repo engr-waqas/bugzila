@@ -14,7 +14,7 @@ module BugsHelper
   end
 
   def can_assign?(bug)
-    policy(bug).assign?
+    policy(bug).assign? && bug.newly?
   end
 
   def can_resolve?(bug)
