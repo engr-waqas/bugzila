@@ -28,51 +28,59 @@ end
 puts('Users Created!')
 
 puts('Creating Projects...')
-User.first.projects.find_or_create_by(title: 'Grosery Store',
-                                      description: 'Buy and sell all kinds of grosery items.')
-User.first.projects.find_or_create_by(title: 'Shopping App', description: 'A small shopping app to buy.')
-User.last.projects.find_or_create_by(title: 'Doorstep Services',
-                                     description: 'Physical services at Doorstep.')
-User.last.projects.find_or_create_by(title: 'wHealth', description: 'Appointment booking.')
+User.first.projects.find_or_create_by(title: 'Grosery Store') do |project|
+  project.description = 'Buy and sell all kinds of grosery items.'
+end
+User.first.projects.find_or_create_by(title: 'Shopping App') do |project|
+  project.description = 'A small shopping app to buy.'
+end
+User.last.projects.find_or_create_by(title: 'Doorstep Services') do |project|
+  project.description = 'Physical services at Doorstep.'
+end
+User.last.projects.find_or_create_by(title: 'wHealth') do |project|
+  project.description = 'Appointment booking.'
+end
 puts('Projects Created!')
 
+first_user_bugs = User.last(2).first.bugs
+last_user_bugs = User.last.bugs
 puts('Creating Bugs...')
-User.last(2).first.bugs.find_or_create_by(title: 'Mutable', bug_type: :bug) do |bug|
+first_user_bugs.find_or_create_by(title: 'Mutable', bug_type: :bug) do |bug|
   bug.description = 'Symbol error.'
   bug.deadline = Time.now.getlocal + 1.week
   bug.bug_type = Bug.bug_types.keys.first
   bug.status = Bug.statuses.keys.first
   bug.project_id = Project.first.id
 end
-User.last(2).first.bugs.find_or_create_by(title: 'Format', bug_type: :bug) do |bug|
+first_user_bugs.find_or_create_by(title: 'Format', bug_type: :bug) do |bug|
   bug.description = 'Email format error.'
   bug.deadline = Time.now.getlocal + 1.week
   bug.bug_type = Bug.bug_types.keys.first
   bug.status = Bug.statuses.keys.first
   bug.project_id = Project.first.id
 end
-User.last(2).first.bugs.find_or_create_by(title: 'Multiple connections', bug_type: :bug) do |bug|
+first_user_bugs.find_or_create_by(title: 'Multiple connections', bug_type: :bug) do |bug|
   bug.description = 'Multiple databases.'
   bug.deadline = Time.now.getlocal + 1.week
   bug.bug_type = Bug.bug_types.keys.first
   bug.status = Bug.statuses.keys.first
   bug.project_id = Project.first.id
 end
-User.last.bugs.find_or_create_by(title: 'Fuction') do |bug|
+last_user_bugs.find_or_create_by(title: 'Fuction') do |bug|
   bug.description = 'Transformation.'
   bug.deadline = Time.now.getlocal + 1.week
   bug.bug_type = Bug.bug_types.keys.last
   bug.status = Bug.statuses.keys.first
   bug.project_id = Project.last.id
 end
-User.last.bugs.find_or_create_by(title: 'Contacl list') do |bug|
+last_user_bugs.find_or_create_by(title: 'Contacl list') do |bug|
   bug.description = 'Default list.'
   bug.deadline = Time.now.getlocal + 1.week
   bug.bug_type = Bug.bug_types.keys.last
   bug.status = Bug.statuses.keys.first
   bug.project_id = Project.last.id
 end
-User.last.bugs.find_or_create_by(title: 'Overflow') do |bug|
+last_user_bugs.find_or_create_by(title: 'Overflow') do |bug|
   bug.description = 'Limit crossing.'
   bug.deadline = Time.now.getlocal + 1.week
   bug.bug_type = Bug.bug_types.keys.last

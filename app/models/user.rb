@@ -14,6 +14,6 @@ class User < ApplicationRecord
   enum user_type: { manager: 0, developer: 1, qa: 2 }
 
   def self.except_manager
-    User.where.not(user_type: :manager)
+    where.not(user_type: :manager)
   end
 end

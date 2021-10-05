@@ -46,14 +46,14 @@ class BugsController < ApplicationController
   def assign
     @user = User.find_by(id: params[:user_id])
     if @user.present?
-      @bug.update(developer: @user, status: Bug.statuses.keys.second)
+      @bug.update(developer: @user, status: Bug.statuses[:started])
     else
       redirect_to project_bugs_path, notice: 'User not found!'
     end
   end
 
   def change_status
-    @bug.update(status: Bug.statuses.keys.last)
+    @bug.update(status: Bug.statuses[:resolved])
   end
 
   private
