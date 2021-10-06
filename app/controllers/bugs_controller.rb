@@ -26,6 +26,7 @@ class BugsController < ApplicationController
   def show; end
 
   def update
+    byebug
     if @bug.update(bug_params)
       redirect_to project_bugs_path, notice: 'Bug Updated Successfully!'
     else

@@ -30,7 +30,7 @@
     <% if attached?(@bug) %>
       <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), alt: "#{@bug.title}"%>
     <% end %>
-    <%= form.file_field :screenshot, accept: Bug::IMG_TYPE, direct_upload: true %>
+    <%= form.file_field :screenshot, accept: Bug::IMG_TYPE, class: 'form-control', direct_upload: true %>
   </p><br>
 
   <div>
