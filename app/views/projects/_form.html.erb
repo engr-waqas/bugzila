@@ -1,14 +1,16 @@
 <%= form_with model: @project, id: 'form'  do |form| %>
-  <p>
+  <p class="align-left">
     <%= form.label :title %>
-    <%= form.text_field :title, autofocus: true, required: true %>
+    <%= form.text_field :title, autofocus: true, required: true, class: "form-control" %>
   </p>
 
-  <p>
+  <p class="align-left">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class: "form-control" %>
   </p>
 
-    <%= link_to 'Cancel', projects_path, class:"btn btn-secondary" %>
+  <div>
     <%= form.submit class:"btn btn-success" %>
+    <%= link_to 'Cancel', projects_path, class:"btn btn-secondary" %>
+  </div>
 <% end %>

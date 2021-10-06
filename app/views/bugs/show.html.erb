@@ -1,52 +1,56 @@
-<h1 class='align-center'><%= @bug.title %></h1>
-<p>
-  <strong>Description:</strong>
-  <%= @bug.description %>
-</p>
+<h1><%= @bug.title %></h1>
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Details</th>
+    </tr>
+  </thead>
 
-<p>
-  <strong>Deadline:</strong>
-  <%= @bug.deadline %>
-</p>
-
-<p>
-  <strong>Bug type:</strong>
-  <%= @bug.bug_type %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <%= @bug.status %>
-</p>
-
-<p>
-  <strong>Project Title:</strong>
-  <%= @bug.project.title %>
-</p>
-
-<p>
-  <strong>Bug Creator:</strong>
-  <%= @bug.creator.name %>
-</p>
-
-<% if @bug.developer_id?%>
-  <p>
-    <strong>Bug Developer:</strong>
-    <%= @bug.developer.name %>
-  </p>
-<% end %>
-
-<p>
-  <% if attached?(@bug) %>
-    <strong>Screenshot:</strong><br>
-    <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE) %>
+  <tbody>
+  <tr>
+    <td><strong>Description:</strong></td>
+    <td><%= @bug.description %></td>
+  </tr>
+  <tr>
+    <td><strong>Deadline:</strong></td>
+    <td><%= @bug.deadline %></td>
+  </tr>
+  <tr>
+    <td><strong>Bug Type:</strong></td>
+    <td><%= @bug.bug_type %></td>
+  </tr>
+  <tr>
+    <td><strong>Status:</strong></td>
+    <td><%= @bug.status %></td>
+  </tr>
+  <tr>
+    <td><strong>Project Title:</strong></td>
+    <td><%= @bug.project.title %></td>
+  </tr>
+  <tr>
+    <td><strong>Bug Creator:</strong></td>
+    <td><%= @bug.creator.name %></td>
+  </tr>
+  <% if @bug.developer_id?%>
+    <tr>
+      <td><strong>Bug Developer:</strong></td>
+      <td><%= @bug.developer.name %></td>
+    </tr>
   <% end %>
-</p>
 
-<br>
-<div class='align-center'>
-  <%= link_to 'Back', project_bugs_path, class: 'btn btn-secondary' %>
+  <% if attached?(@bug) %>
+    <tr>
+      <td><strong>Screenshot:</strong></td>
+      <td><%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div>
   <% if can_modify?(@bug) %>
     <%= link_to 'Edit Bug', edit_project_bug_path(@project, @bug), class: 'btn btn-light' %>
   <% end %>
+  <%= link_to 'Back', project_bugs_path, class: 'btn btn-secondary' %>
 </div>

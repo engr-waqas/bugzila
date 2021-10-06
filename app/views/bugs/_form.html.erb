@@ -1,40 +1,40 @@
 <%= form_with(model: bug, url: [@project, @bug], local: true) do |form| %>
 
-  <div >
+  <p >
     <%= form.label :title %>
-    <%= form.text_field :title, required: true, autofocus: true %>
-  </div><br>
+    <%= form.text_field :title, required: true, autofocus: true, class: "form-control" %>
+  </p><br>
 
-  <div >
+  <p >
     <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div><br>
+    <%= form.text_area :description, class: "form-control" %>
+  </p><br>
 
-  <div >
+  <p >
     <%= form.label :deadline %>
-    <%= form.datetime_select :deadline %>
-  </div><br>
+    <%= form.datetime_select :deadline, class: "form-select" %>
+  </p><br>
 
-  <div >
+  <p >
     <%= form.label :bug_type %>
-    <%= form.select :bug_type, Bug.bug_types.keys.map { |t| [t.humanize, t] } %>
-  </div><br>
+    <%= form.select :bug_type, Bug.bug_types.keys.map { |t| [t.humanize, t] }, {class: "form-select"} %>
+  </p><br>
 
-  <div >
+  <p >
     <%= form.label :status %>
-    <%= form.select :status, Bug.statuses.keys.map { |s| [s.humanize, s] } %>
-  </div><br>
+    <%= form.select :status, Bug.statuses.keys.map { |s| [s.humanize, s] }, {class: "form-select"} %>
+  </p><br>
 
-  <div >
+  <p >
     <%= form.label :screenshot %><br>
     <% if attached?(@bug) %>
       <%= image_tag @bug.screenshot.variant(resize: Bug::IMG_SIZE), alt: "#{@bug.title}"%>
     <% end %>
     <%= form.file_field :screenshot, accept: Bug::IMG_TYPE, direct_upload: true %>
-  </div><br>
+  </p><br>
 
-  <div class='align-center'>
-    <%= link_to 'Cancel', project_bugs_path, class: 'btn btn-secondary' %>
+  <div>
     <%= form.submit class:'btn btn-success'%>
+    <%= link_to 'Cancel', project_bugs_path, class: 'btn btn-secondary' %>
   </div><br>
 <% end %>
