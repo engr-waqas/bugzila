@@ -38,8 +38,8 @@
   - Dumy data in 'seed.rb' file
 
 # Author
- - Name: M Waqas
- - Email: mohammad.waqas@devsinc.com
+ - Name: Waqas Taj
+ - Email: dev.waqastaj@gmail.com
 
 # Project Status/type
  - Ruby on Rails Test-Project
